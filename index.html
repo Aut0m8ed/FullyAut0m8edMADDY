@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FullyAut0m8edMADDY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #0a0a0a;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+      color: white;
+    }
+
+    .maddy-img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      filter: brightness(0.8);
+      animation: breathe 6s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+      100% { transform: scale(1); }
+    }
+
+    .intro-text {
+      position: absolute;
+      top: 30%;
+      width: 100%;
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeIn 3s ease forwards;
+      animation-delay: 1s;
+      text-shadow: 0 0 10px #ff4f8b;
+    }
+
+    .cta {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: fadeIn 3s ease forwards;
+      animation-delay: 3s;
+    }
+
+    .cta button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: transparent;
+      border: 2px solid #ff4f8b;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px #ff4f8b;
+    }
+
+    .cta button:hover {
+      background-color: #ff4f8b;
+      color: #0a0a0a;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="maddy-img" src="maddy.png" alt="Maddy" />
+    <div class="intro-text">Hi, I'm Maddy and I am about to change your life forever.</div>
+    <div class="cta">
+      <button>LAUNCH MADDY</button>
+    </div>
+  </div>
+</body>
+</html>
