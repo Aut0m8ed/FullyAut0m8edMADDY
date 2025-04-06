@@ -44,3 +44,8 @@ body, html {
   font-weight: bold;
   border-radius: 4px;
 }
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
