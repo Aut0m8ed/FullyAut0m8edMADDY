@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FullyAut0m8edMADDY</title>
+
   <style>
     html, body {
       margin: 0;
@@ -33,9 +34,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0, 0, 0, 0.3);
       flex-direction: column;
       text-align: center;
+      padding: 0 40px;
     }
 
     .title {
@@ -49,6 +51,22 @@
       font-size: 1.3em;
       max-width: 80%;
       text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    @media screen and (max-width: 768px) {
+      .title {
+        font-size: 8vw;
+      }
+
+      .subtitle {
+        font-size: 5vw;
+        padding: 0 10px;
+        max-width: 95%;
+      }
+
+      .overlay {
+        padding: 20px;
+      }
     }
   </style>
 </head>
@@ -66,3 +84,4 @@
 
 </body>
 </html>
+
