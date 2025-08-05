@@ -1,137 +1,183 @@
-<!-- REACT + TAILWIND DASHBOARD REPLACEMENT -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FullyAut0m8edMADDY Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FullyAut0m8edMADDY Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
+    <div id="root"></div>
+    <script type="text/babel">
+        const tokens = ['HBAR', 'FARTCOIN', 'GRIFFAIN', 'PEPE', 'XRP', 'BONK'];
+        const strategies = ['Strategy 1', 'Strategy 2', 'Strategy 3', 'Strategy 4'];
+        const altcoins = ['ADA', 'AVAX', 'SOL', 'DOGE', 'SHIB', 'MATIC', 'LINK', 'DOT', 'TRX', 'LTC', 'BCH', 'XLM', 'VET', 'ALGO', 'EGLD', 'HBAR', 'FARTCOIN', 'GRIFFAIN', 'PEPE', 'XRP', 'BONK', 'ATOM', 'NEAR', 'FIL', 'INJ', 'RNDR', 'TAO', 'FTM', 'RUNE', 'LDO', 'AAVE', 'MKR', 'UNI', 'SUSHI', 'COMP', 'ZIL', 'BAT', '1INCH', 'CRV', 'SAND', 'MANA', 'ENJ', 'CHZ', 'GALA', 'AXS', 'KSM', 'XTZ', 'EOS', 'NEO', 'IOTA'];
 
-    const tokens = ['HBAR', 'FARTCOIN', 'GRIFFAIN', 'PEPE', 'XRP', 'BONK'];
-    const strategies = ['Strategy 1', 'Strategy 2', 'Strategy 3', 'Strategy 4'];
-    const altcoins = ['ADA', 'AVAX', 'SOL', 'DOGE', 'SHIB', 'MATIC', 'LINK', 'DOT', 'TRX', 'LTC', 'BCH', 'XLM', 'VET', 'ALGO', 'EGLD', 'HBAR', 'FARTCOIN', 'GRIFFAIN', 'PEPE', 'XRP', 'BONK', 'ATOM', 'NEAR', 'FIL', 'INJ', 'RNDR', 'TAO', 'FTM', 'RUNE', 'LDO', 'AAVE', 'MKR', 'UNI', 'SUSHI', 'COMP', 'ZIL', 'BAT', '1INCH', 'CRV', 'SAND', 'MANA', 'ENJ', 'CHZ', 'GALA', 'AXS', 'KSM', 'XTZ', 'EOS', 'NEO', 'IOTA'];
-
-    const mockData = {
-        'HBAR': { strategy: 'Strategy 1', pnl_percent: 8.5, pnl_dollars: 150.75, win_rate: 70.1, current_trade: 'Long', signals_7d: 10, signals_30d: 45 },
-        'FARTCOIN': { strategy: 'Strategy 2', pnl_percent: -3.2, pnl_dollars: -50.20, win_rate: 55.5, current_trade: 'Idle', signals_7d: 12, signals_30d: 50 },
-        'GRIFFAIN': { strategy: 'Strategy 3', pnl_percent: 15.7, pnl_dollars: 300.00, win_rate: 68.9, current_trade: 'Short', signals_7d: 15, signals_30d: 60 },
-        'PEPE': { strategy: 'Strategy 4', pnl_percent: 20.1, pnl_dollars: 400.50, win_rate: 75.2, current_trade: 'Long', signals_7d: 18, signals_30d: 70 },
-        'XRP': { strategy: 'Strategy 1', pnl_percent: -1.5, pnl_dollars: -25.30, win_rate: 60.0, current_trade: 'Idle', signals_7d: 8, signals_30d: 40 },
-        'BONK': { strategy: 'Strategy 2', pnl_percent: 12.4, pnl_dollars: 237.50, win_rate: 65.2, current_trade: 'Long', signals_7d: 14, signals_30d: 52 }
-    };
-
-    function TokenCard({ token, onRemove, onStrategyChange }) {
-        const data = mockData[token] || {
-            strategy: strategies[0],
-            pnl_percent: 0,
-            pnl_dollars: 0,
-            win_rate: 0,
-            current_trade: 'Idle',
-            signals_7d: 0,
-            signals_30d: 0
+        const mockData = {
+            'HBAR': { strategy: 'Strategy 1', pnl_percent: 8.5, pnl_dollars: 150.75, win_rate: 70.1, current_trade: 'Long', signals_7d: 10, signals_30d: 45 },
+            'FARTCOIN': { strategy: 'Strategy 2', pnl_percent: -3.2, pnl_dollars: -50.20, win_rate: 55.5, current_trade: 'Idle', signals_7d: 12, signals_30d: 50 },
+            'GRIFFAIN': { strategy: 'Strategy 3', pnl_percent: 15.7, pnl_dollars: 300.00, win_rate: 68.9, current_trade: 'Short', signals_7d: 15, signals_30d: 60 },
+            'PEPE': { strategy: 'Strategy 4', pnl_percent: 20.1, pnl_dollars: 400.50, win_rate: 75.2, current_trade: 'Long', signals_7d: 18, signals_30d: 70 },
+            'XRP': { strategy: 'Strategy 1', pnl_percent: -1.5, pnl_dollars: -25.30, win_rate: 60.0, current_trade: 'Idle', signals_7d: 8, signals_30d: 40 },
+            'BONK': { strategy: 'Strategy 2', pnl_percent: 12.4, pnl_dollars: 237.50, win_rate: 65.2, current_trade: 'Long', signals_7d: 14, signals_30d: 52 }
         };
 
-        return (
-            <div className="bg-gray-800 rounded-lg shadow-lg p-4 text-white relative">
-                <button onClick={() => onRemove(token)} className="absolute top-2 right-2 text-red-500 hover:text-red-700">✕</button>
-                <h2 className="text-xl font-bold mb-2">{token}</h2>
-                <div className="mb-3">
-                    <label className="block text-sm mb-1">Strategy</label>
-                    <select value={data.strategy} onChange={(e) => onStrategyChange(token, e.target.value)} className="w-full bg-gray-700 rounded p-2 text-white">
-                        {strategies.map((strategy) => <option key={strategy}>{strategy}</option>)}
-                    </select>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                        <p className="font-semibold">PNL</p>
-                        <p className={data.pnl_percent >= 0 ? 'text-green-500' : 'text-red-500'}>
-                            {data.pnl_percent.toFixed(2)}% (${data.pnl_dollars.toFixed(2)})
-                        </p>
+        function TokenCard({ token, onRemove, onStrategyChange }) {
+            const data = mockData[token] || {
+                strategy: strategies[0],
+                pnl_percent: 0,
+                pnl_dollars: 0,
+                win_rate: 0,
+                current_trade: 'Idle',
+                signals_7d: 0,
+                signals_30d: 0
+            };
+
+            return (
+                <div className="bg-gray-800 rounded-lg shadow-lg p-4 text-white relative">
+                    <button
+                        onClick={() => onRemove(token)}
+                        className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                    >
+                        ✕
+                    </button>
+                    <div className="flex items-center mb-2">
+                        <h2 className="text-xl font-bold">{token}</h2>
                     </div>
-                    <div>
-                        <p className="font-semibold">Win Rate</p>
-                        <p>{data.win_rate.toFixed(1)}%</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">Trade Status</p>
-                        <p className={data.current_trade !== 'Idle' ? 'text-green-500' : ''}>
-                            {data.current_trade}
-                            {data.current_trade !== 'Idle' && <span className="ml-1 inline-block h-2 w-2 bg-green-500 rounded-full"></span>}
-                        </p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">Signals</p>
-                        <p>7d: {data.signals_7d} | 30d: {data.signals_30d}</p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    function Dashboard() {
-        const [selectedTokens, setSelectedTokens] = React.useState(tokens);
-        const [globalStrategy, setGlobalStrategy] = React.useState(strategies[0]);
-
-        const addToken = (token) => {
-            if (!selectedTokens.includes(token)) {
-                setSelectedTokens([...selectedTokens, token]);
-            }
-        };
-
-        const removeToken = (token) => {
-            setSelectedTokens(selectedTokens.filter((t) => t !== token));
-        };
-
-        const changeStrategy = (token, strategy) => {
-            mockData[token] = { ...mockData[token], strategy };
-        };
-
-        const applyGlobalStrategy = () => {
-            selectedTokens.forEach((token) => {
-                mockData[token] = { ...mockData[token], strategy: globalStrategy };
-            });
-            setSelectedTokens([...selectedTokens]); // force re-render
-        };
-
-        return (
-            <div className="min-h-screen bg-gray-900 text-white p-4">
-                <h1 className="text-3xl font-bold mb-6 text-center">FullyAut0m8edMADDY Dashboard</h1>
-                <div className="flex flex-col sm:flex-row justify-between mb-6 gap-4">
-                    <div className="flex-1">
-                        <label className="block text-sm mb-1">Add Token</label>
-                        <select onChange={(e) => addToken(e.target.value)} className="w-full bg-gray-700 rounded p-2 text-white">
-                            <option value="">Select a token</option>
-                            {altcoins.map((token) => <option key={token}>{token}</option>)}
+                    <div className="mb-3">
+                        <label className="block text-sm mb-1">Strategy</label>
+                        <select
+                            value={data.strategy}
+                            onChange={(e) => onStrategyChange(token, e.target.value)}
+                            className="w-full bg-gray-700 rounded p-2 text-white"
+                        >
+                            {strategies.map((strategy) => (
+                                <option key={strategy} value={strategy}>{strategy}</option>
+                            ))}
                         </select>
                     </div>
-                    <div className="flex-1">
-                        <label className="block text-sm mb-1">Global Strategy</label>
-                        <div className="flex gap-2">
-                            <select value={globalStrategy} onChange={(e) => setGlobalStrategy(e.target.value)} className="w-full bg-gray-700 rounded p-2 text-white">
-                                {strategies.map((strategy) => <option key={strategy}>{strategy}</option>)}
-                            </select>
-                            <button onClick={applyGlobalStrategy} className="bg-blue-600 hover:bg-blue-700 text-white rounded p-2">Apply</button>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                            <p className="font-semibold">PNL</p>
+                            <p className={data.pnl_percent >= 0 ? 'text-green-500' : 'text-red-500'}>
+                                {data.pnl_percent.toFixed(2)}% (${data.pnl_dollars.toFixed(2)})
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-semibold">Win Rate</p>
+                            <p>{data.win_rate.toFixed(1)}%</p>
+                        </div>
+                        <div>
+                            <p className="font-semibold">Trade Status</p>
+                            <p className={data.current_trade !== 'Idle' ? 'text-green-500' : ''}>
+                                {data.current_trade}
+                                {data.current_trade !== 'Idle' && (
+                                    <span className="ml-1 inline-block h-2 w-2 bg-green-500 rounded-full"></span>
+                                )}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-semibold">Signals</p>
+                            <p>7d: {data.signals_7d} | 30d: {data.signals_30d}</p>
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {selectedTokens.map((token) => (
-                        <TokenCard key={token} token={token} onRemove={removeToken} onStrategyChange={changeStrategy} />
-                    ))}
+            );
+        }
+
+        function Dashboard() {
+            const [selectedTokens, setSelectedTokens] = React.useState(tokens);
+            const [globalStrategy, setGlobalStrategy] = React.useState(strategies[0]);
+
+            const addToken = (token) => {
+                if (token && !selectedTokens.includes(token)) {
+                    // Initialize new token with default data
+                    mockData[token] = {
+                        strategy: globalStrategy,
+                        pnl_percent: 0,
+                        pnl_dollars: 0,
+                        win_rate: 0,
+                        current_trade: 'Idle',
+                        signals_7d: 0,
+                        signals_30d: 0
+                    };
+                    setSelectedTokens([...selectedTokens, token]);
+                }
+            };
+
+            const removeToken = (token) => {
+                setSelectedTokens(selectedTokens.filter((t) => t !== token));
+                delete mockData[token]; // Clean up mock data
+            };
+
+            const changeStrategy = (token, strategy) => {
+                mockData[token] = { ...mockData[token], strategy };
+                setSelectedTokens([...selectedTokens]); // Trigger re-render
+            };
+
+            const applyGlobalStrategy = () => {
+                selectedTokens.forEach((token) => {
+                    mockData[token] = { ...mockData[token], strategy: globalStrategy };
+                });
+                setSelectedTokens([...selectedTokens]); // Trigger re-render
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-900 text-white p-4">
+                    <h1 className="text-3xl font-bold mb-6 text-center">FullyAut0m8edMADDY Dashboard</h1>
+                    <div className="flex flex-col sm:flex-row justify-between mb-6 gap-4">
+                        <div className="flex-1">
+                            <label className="block text-sm mb-1">Add Token</label>
+                            <select
+                                onChange={(e) => addToken(e.target.value)}
+                                className="w-full bg-gray-700 rounded p-2 text-white"
+                            >
+                                <option value="">Select a token</option>
+                                {altcoins.map((token) => (
+                                    <option key={token} value={token}>{token}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-sm mb-1">Global Strategy</label>
+                            <div className="flex gap-2">
+                                <select
+                                    value={globalStrategy}
+                                    onChange={(e) => setGlobalStrategy(e.target.value)}
+                                    className="w-full bg-gray-700 rounded p-2 text-white"
+                                >
+                                    {strategies.map((strategy) => (
+                                        <option key={strategy} value={strategy}>{strategy}</option>
+                                    ))}
+                                </select>
+                                <button
+                                    onClick={applyGlobalStrategy}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded p-2"
+                                >
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {selectedTokens.map((token) => (
+                            <TokenCard
+                                key={token}
+                                token={token}
+                                onRemove={removeToken}
+                                onStrategyChange={changeStrategy}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
-        );
-    }
+            );
+        }
 
-    ReactDOM.render(<Dashboard />, document.getElementById('root'));
-
-  </script>
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Dashboard />);
+    </script>
 </body>
 </html>
