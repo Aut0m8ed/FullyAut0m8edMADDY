@@ -84,8 +84,9 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop id="background-video" poster="https://via.placeholder.com/1920x1080?text=Video+Loading">
+    <video autoplay muted loop playsinline id="background-video" poster="https://via.placeholder.com/1920x1080?text=Video+Loading">
         <source src="assets/maddy-background.mp4" type="video/mp4">
+        <source src="assets/maddy-background.webm" type="video/webm">
         <p>Your browser does not support HTML5 video. Please use a modern browser like Chrome, Firefox, or Safari.</p>
     </video>
 
@@ -101,8 +102,11 @@
 
     <script>
         // Ensure video plays on load
-        document.getElementById('background-video').play().catch(function(error) {
+        const video = document.getElementById('background-video');
+        video.play().catch(function(error) {
             console.log("Autoplay failed: ", error);
+            // Log device info for debugging
+            console.log("Device Info: ", navigator.userAgent);
         });
     </script>
 </body>
