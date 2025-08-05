@@ -1,10 +1,225 @@
-
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Backtest Engine</title><link rel="stylesheet" href="assets/style.css"></head>
-<body><div class="navbar"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a></div>
-<div class="container"><h1>Backtest Engine</h1>
-<form><label>Upload Strategy File:</label><input type="file"><br><br>
-<label>Upload Token Historical CSV:</label><input type="file"><br><br>
-<button type="submit">Run Backtest</button></form>
-<p>If no CSV is uploaded, MADDY will fetch data from Binance for you.</p></div></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FullyAut0m8edMADDY Backtest Engine Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const tokens = ['BONK', 'PEPE', 'HBAR', 'XRP', 'FARTCOIN', 'GRIFFAIN'];
+        const strategies = ['Strategy 1', 'Strategy 2', 'Strategy 3', 'Strategy 4'];
+
+        const mockData = {
+            'BONK-Strategy 2': {
+                combinations: [
+                    { params: 'ATR=12, BB=20, SL=2.5', win_rate: 65.2, gross_profit: 237.50, avg_time: 2.1, rr_ratio: 2.3, np_dd: 1.8 },
+                    { params: 'ATR=14, BB=25, SL=3.0', win_rate: 60.5, gross_profit: 180.30, avg_time: 2.5, rr_ratio: 2.0, np_dd: 1.5 },
+                    // ... additional combinations
+                ],
+                backtest: { win_rate: 65.2, profit: 237.50, drawdown: 25.0, trade_count: 52, time_in_market: 30 },
+                walk_forward: { win_rate: 62.1, profit: 220.00, drawdown: 28.0, trade_count: 48, time_in_market: 28 },
+                summary: { total_combos: 100, last_run: '2025-08-04 23:59', time_taken: '2h 15m', file: 'backtest_bonk_20250804.csv', notes: 'Initial run' }
+            },
+            // ... additional token-strategy pairs
+        };
+
+        function AnalyticsTable({ title, data }) {
+            return (
+                <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-2">{title}</h3>
+                    <table className="w-full bg-gray-800 rounded-lg overflow-hidden">
+                        <thead>
+                            <tr className="bg-gray-700">
+                                <th className="p-2 text-left">Parameters</th>
+                                <th className="p-2 text-left">Win Rate (%)</th>
+                                <th className="p-2 text-left">Gross Profit ($)</th>
+                                <th className="p-2 text-left">Avg Time (h)</th>
+                                <th className="p-2 text-left">R/R Ratio</th>
+                                <th className="p-2 text-left">NP/DD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.slice(0, 10).map((row, index) => (
+                                <tr key={index} className="border-t border-gray-600">
+                                    <td className="p-2">{row.params}</td>
+                                    <td className="p-2">{row.win_rate.toFixed(1)}</td>
+                                    <td className="p-2">{row.gross_profit.toFixed(2)}</td>
+                                    <td className="p-2">{row.avg_time.toFixed(1)}</td>
+                                    <td className="p-2">{row.rr_ratio.toFixed(1)}</td>
+                                    <td className="p-2">{row.np_dd.toFixed(1)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        function BacktestComparison({ backtest, walkForward }) {
+            const metrics = ['Win Rate (%)', 'Profit ($)', 'Drawdown (%)', 'Trade Count', 'Time in Market (days)'];
+            return (
+                <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-2">Backtest vs Walk-Forward</h3>
+                    <table className="w-full bg-gray-800 rounded-lg overflow-hidden">
+                        <thead>
+                            <tr className="bg-gray-700">
+                                <th className="p-2 text-left">Metric</th>
+                                <th className="p-2 text-left">Backtest</th>
+                                <th className="p-2 text-left">Walk-Forward</th>
+                                <th className="p-2 text-left">Delta (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {metrics.map((metric) => {
+                                const btValue = backtest[metric.toLowerCase().replace(/ /g, '_')] || 0;
+                                const wfValue = walkForward[metric.toLowerCase().replace(/ /g, '_')] || 0;
+                                const delta = wfValue ? ((wfValue - btValue) / btValue * 100).toFixed(1) : 0;
+                                return (
+                                    <tr key={metric} className="border-t border-gray-600">
+                                        <td className="p-2">{metric}</td>
+                                        <td className="p-2">{btValue.toFixed(1)}</td>
+                                        <td className="p-2">{wfValue.toFixed(1)}</td>
+                                        <td className={delta >= 0 ? 'text-green-500 p-2' : 'text-red-500 p-2'}>{delta}%</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        function OptimizationSummary({ summary }) {
+            return (
+                <div className="mb-6 bg-gray-800 p-4 rounded-lg sticky top-4">
+                    <h3 className="text-lg font-semibold mb-2">Optimization Summary</h3>
+                    <p>Total Combinations: {summary.total_combos}</p>
+                    <p>Last Run: {summary.last_run}</p>
+                    <p>Time Taken: {summary.time_taken}</p>
+                    <p>File: {summary.file}</p>
+                    <p>Notes: {summary.notes}</p>
+                </div>
+            );
+        }
+
+        function BacktestPortal() {
+            const [selectedToken, setSelectedToken] = React.useState(tokens[0]);
+            const [selectedStrategy, setSelectedStrategy] = React.useState(strategies[0]);
+            const key = `${selectedToken}-${selectedStrategy}`;
+            const data = mockData[key] || { combinations: [], backtest: {}, walk_forward: {}, summary: {} };
+
+            return (
+                <div className="min-h-screen bg-gray-900 text-white p-4">
+                    <h1 className="text-3xl font-bold mb-6 text-center">FullyAut0m8edMADDY Backtest Portal</h1>
+                    <div className="flex flex-col sm:flex-row justify-between mb-6 gap-4">
+                        <div className="flex-1">
+                            <label className="block text-sm mb-1">Select Token</label>
+                            <select
+                                value={selectedToken}
+                                onChange={(e) => setSelectedToken(e.target.value)}
+                                className="w-full bg-gray-700 rounded p-2 text-white"
+                            >
+                                {tokens.map((token) => (
+                                    <option key={token} value={token}>{token}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-sm mb-1">Select Strategy</label>
+                            <select
+                                value={selectedStrategy}
+                                onChange={(e) => setSelectedStrategy(e.target.value)}
+                                className="w-full bg-gray-700 rounded p-2 text-white"
+                            >
+                                {strategies.map((strategy) => (
+                                    <option key={strategy} value={strategy}>{strategy}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-2">
+                            <div className="tabs mb-6">
+                                <input type="radio" name="tabs" id="tab1" defaultChecked className="tab" />
+                                <label htmlFor="tab1" className="tab-label">Win Rate</label>
+                                <div className="tab-content">
+                                    <AnalyticsTable title="Top 10 by Win Rate" data={data.combinations.sort((a, b) => b.win_rate - a.win_rate)} />
+                                </div>
+                                <input type="radio" name="tabs" id="tab2" className="tab" />
+                                <label htmlFor="tab2" className="tab-label">Gross Profit</label>
+                                <div className="tab-content">
+                                    <AnalyticsTable title="Top 10 by Gross Profit" data={data.combinations.sort((a, b) => b.gross_profit - a.gross_profit)} />
+                                </div>
+                                <input type="radio" name="tabs" id="tab3" className="tab" />
+                                <label htmlFor="tab3" className="tab-label">Shortest Avg Time</label>
+                                <div className="tab-content">
+                                    <AnalyticsTable title="Top 10 by Shortest Avg Time in Trade" data={data.combinations.sort((a, b) => a.avg_time - b.avg_time)} />
+                                </div>
+                                <input type="radio" name="tabs" id="tab4" className="tab" />
+                                <label htmlFor="tab4" className="tab-label">Risk/Reward</label>
+                                <div className="tab-content">
+                                    <AnalyticsTable title="Top 10 by Risk/Reward Ratio" data={data.combinations.sort((a, b) => b.rr_ratio - a.rr_ratio)} />
+                                </div>
+                                <input type="radio" name="tabs" id="tab5" className="tab" />
+                                <label htmlFor="tab5" className="tab-label">NP/DD</label>
+                                <div className="tab-content">
+                                    <AnalyticsTable title="Top 10 by Net Profit / Drawdown" data={data.combinations.sort((a, b) => b.np_dd - a.np_dd)} />
+                                </div>
+                            </div>
+                            <BacktestComparison backtest={data.backtest} walkForward={data.walk_forward} />
+                        </div>
+                        <div className="lg:col-span-1">
+                            <OptimizationSummary summary={data.summary} />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<BacktestPortal />);
+    </script>
+    <style>
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            margin: 0 0 1rem;
+        }
+        .tab {
+            display: none;
+        }
+        .tab-label {
+            order: 1;
+            display: flex;
+            padding: 1rem 2rem;
+            background: #2d3748;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        .tab-content {
+            order: 99;
+            flex-grow: 1;
+            width: 100%;
+            display: none;
+            padding: 1rem;
+            background: #1a202c;
+            border-radius: 0.5rem;
+        }
+        .tab:checked + .tab-label {
+            background: #4a5568;
+            font-weight: bold;
+        }
+        .tab:checked ~ .tab-content {
+            display: block;
+        }
+    </style>
+</body>
+</html>
